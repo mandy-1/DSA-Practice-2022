@@ -1,36 +1,34 @@
 class Solution {
 public:
-    int dp[100][100][100];
-    int rec(int i,int idx1,int idx2,vector<vector<int>> &grid){
-        if(i==grid.size()-1){
-            return idx1==idx2?grid[i][idx1]:grid[i][idx1]+grid[i][idx2];
+int solve(int i,int j1,int j2,int n,int m, vector<vector<int>>& grid ,vector<vector<vector<int>>> &dp){
+        if(j1<0 || j1>=m || j2<0 || j2>=m) return -1e8;
+        if(i==n-1){
+            if(j1==j2) return grid[i][j1];
+            else return grid[i][j1]+grid[i][j2];
         }
-        int curr=INT_MIN;
-        if(dp[i][idx1][idx2]!=-1) return dp[i][idx1][idx2];
-        int k=idx1==idx2?grid[i][idx1]:grid[i][idx1]+grid[i][idx2];
-        
-        // go first robot left
-        if(idx1-1>=0){
-            if(idx2-1>=0) curr=max(curr,k+rec(i+1,idx1-1,idx2-1,grid));   // second robot left
-            curr=max(curr,k+rec(i+1,idx1-1,idx2,grid)); // second robot same
-            if(idx2+1<grid[0].size()) curr=max(curr,k+rec(i+1,idx1-1,idx2+1,grid)); // second robot right;
+        int maxi= -1e8;
+        if(dp[i][j1][j2] != -1) return dp[i][j1][j2];
+        for(int a=-1;a<2;a++){
+            for(int b=-1;b<2;b++){
+                int val=0;
+                if(j1 == j2){
+                    val= grid[i][j1];                
+                }
+                else{
+                    val= grid[i][j1]+grid[i][j2];
+                }
+                 val +=solve(i+1,j1+a,j2+b,n,m,grid,dp);
+                maxi = max(maxi, val);
+             }
         }
-        // first robot same
-        if(idx2-1>=0) curr=max(curr,k+rec(i+1,idx1,idx2-1,grid));
-        curr=max(curr,k+rec(i+1,idx1,idx2,grid));
-        if(idx2+1<grid[0].size()) curr=max(curr,k+rec(i+1,idx1,idx2+1,grid));
-        
-        //first robot right
-        if(idx1+1<grid[0].size()){
-            if(idx2-1>=0) curr=max(curr,k+rec(i+1,idx1+1,idx2-1,grid));
-            curr=max(curr,k+rec(i+1,idx1+1,idx2,grid));
-            if(idx2+1<grid[0].size()) curr=max(curr,k+rec(i+1,idx1+1,idx2+1,grid));
-        }
-        
-        return dp[i][idx1][idx2]=curr;
+        return dp[i][j1][j2] = maxi;
     }
+       
+    
     int cherryPickup(vector<vector<int>>& grid) {
-        memset(dp,-1,sizeof(dp));
-        return rec(0,0,grid[0].size()-1,grid);
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<vector<int>>>dp(n,vector<vector<int>>(m,vector<int>(m,-1)));
+        return solve(0,0,m-1,n,m,grid,dp);
     }
 };

@@ -1,36 +1,29 @@
 class Solution {
 public:
-    int dp[21][1001];
-    
-    // targetSum(target,index) return no of ways to reach target from index
-    int targetSum(vector<int> &nums, int target, int index){
-        if(index == nums.size()){
-            if(target == 0){
-                return 1;
-            }
+    int solve(int idx,int tar,vector<int>&nums , vector<vector<int>>& dp){
+        if(idx==0){
+            if(nums[0]==0 && tar==0)return 2;
+            if(tar==0 || nums[0]==tar)return 1;
             return 0;
         }
-        if(dp[index][target]!=-1){
-            return dp[index][target];
+        if(dp[idx][tar] != -1)return dp[idx][tar];
+        int notTake=solve(idx-1,tar,nums,dp);
+        int take=0;
+        if(tar>=nums[idx]){
+            take=solve(idx-1,tar-nums[idx],nums,dp);
         }
-        if(nums[index]<=target)
-            return dp[index][target] = targetSum(nums,target-nums[index],index+1) + targetSum(nums,target,index+1);
-        return dp[index][target] = targetSum(nums,target,index+1);
+        
+        return dp[idx][tar]= take+notTake;
     }
     
-    
-    int findTargetSumWays(vector<int>& nums, int diff) {
-        int sum = 0;
-        for(auto i:nums){
-            sum += i;
+    int findTargetSumWays(vector<int>& nums, int d) {
+        int n=nums.size();
+        int TotalSum=0;
+        for(int i=0;i<n;i++){
+            TotalSum+=nums[i];
         }
-        if((sum+diff)%2 != 0){
-            return 0;
-        }
-        int target = (sum+diff)/2;
-        if(target<0){
-            return 0;
-        }
-        memset(dp,-1,sizeof(dp));
-        int ans = targetSum(nums,target,0);
-        return ans;}};
+        vector<vector<int>> dp(n,vector<int>(((TotalSum-d)/2)+1,-1));
+        if(TotalSum-d<0 || (TotalSum-d)%2)return false;
+        return solve(n-1,(TotalSum-d)/2,nums,dp);
+    }
+};

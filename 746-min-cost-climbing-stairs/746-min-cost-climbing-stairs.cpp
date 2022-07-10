@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int f(int i,vector<int> cost,vector<int>&dp){
+    int f(int i,vector<int>&cost,vector<int>&dp){
         if(i>cost.size()-1)return 0 ;
         if(i==cost.size()-1)return cost[i];
         if(dp[i] != -1)return dp[i];
@@ -11,8 +11,6 @@ public:
     int minCostClimbingStairs(vector<int>& cost) {
         int n=cost.size();
         vector<int>dp(n,-1);
-        int first=f(0,cost,dp);
-        int second=f(1,cost,dp);
-        return min(first,second);
+        return min(f(0,cost,dp),f(1,cost,dp));
     }
 };

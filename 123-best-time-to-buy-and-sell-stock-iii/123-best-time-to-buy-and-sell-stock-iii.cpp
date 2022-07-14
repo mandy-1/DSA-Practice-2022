@@ -7,14 +7,10 @@ public:
         if(dp[i][buy][count]!= -1)return dp[i][buy][count];
         int profit=0;
         if(buy){
-            int take= -a[i] + f(i+1,0,a,dp,count);
-            int notTake = 0 + f(i+1,1,a,dp,count);
-            profit = max(take,notTake);
+            profit = max(-a[i] + f(i+1,0,a,dp,count),0 + f(i+1,1,a,dp,count));
         }
         else{
-            int sell = a[i] + f(i+1,1,a,dp , count+1);
-            int notSell = 0 + f(i+1,0,a,dp , count);
-            profit = max(sell,notSell);
+            profit = max(a[i] + f(i+1,1,a,dp , count+1),0 + f(i+1,0,a,dp , count));
         }
         return dp[i][buy][count] = profit;
     }

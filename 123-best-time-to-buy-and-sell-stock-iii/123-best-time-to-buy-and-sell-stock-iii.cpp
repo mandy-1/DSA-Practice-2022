@@ -1,21 +1,39 @@
 class Solution {
 public:
-   int f(int i,int buy,vector<int>& a, vector<vector<vector<int>>>& dp , int count){
-       if(count ==2) return 0;
-       if(i==a.size()) return 0;
-       
-        if(dp[i][buy][count]!= -1)return dp[i][buy][count];
-        int profit=0;
-        if(buy){
-            profit = max(-a[i] + f(i+1,0,a,dp,count),0 + f(i+1,1,a,dp,count));
+
+ 
+    
+    
+    
+    
+    
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        
+        vector<vector<vector<int>>> dp(n+1,vector<vector<int>>(2,vector<int>(3,0)));
+        
+        for(int idx=n-1;idx>=0;idx--){
+            for(int buy=0;buy<=1;buy++){
+                for(int cap=1;cap<=2;cap++){
+                    if(buy){
+                        int take = -prices[idx] + dp[idx+1][0][cap];
+
+                        
+                        int notTake = 0 + dp[idx+1][1][cap];
+
+                        dp[idx][buy][cap] = max(take,notTake);
+                    }
+                    else{
+                        int sell = prices[idx] + dp[idx+1][1][cap-1];
+
+                        int notSell = 0 + dp[idx+1][0][cap];
+                        
+                        dp[idx][buy][cap] = max(sell,notSell);
+                    }
+                }
+            }
         }
-        else{
-            profit = max(a[i] + f(i+1,1,a,dp , count+1),0 + f(i+1,0,a,dp , count));
-        }
-        return dp[i][buy][count] = profit;
-    }
-    int maxProfit(vector<int>& a) {
-        vector<vector<vector<int>>>dp(a.size() ,vector<vector<int>>(2,vector<int>(3,-1)));
-        return f(0,1,a,dp,0);
+        
+        return dp[0][1][2];
     }
 };

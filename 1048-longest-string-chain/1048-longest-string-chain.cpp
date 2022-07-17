@@ -15,7 +15,7 @@ public:
         return false;
     }
     
-   static bool comp(string& s1,string& s2){
+    static bool comp(string& s1,string& s2){
         return s1.size()<s2.size();
     }
     
@@ -24,7 +24,7 @@ public:
         vector<int>dp(n,1);
         sort(words.begin(),words.end(),comp);
         int maxi=0;
-        for(int i=0;i<n;i++){
+        for(int i=1;i<n;i++){
             cout<<words[i]<<" ";
         }
         for(int i=0;i<n;i++){

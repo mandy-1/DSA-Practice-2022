@@ -1,49 +1,31 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
 class Solution {
 public:
- TreeNode* buildTreeHelper(vector<int> preorder,vector<int> inorder,int inS,int inE,int preS,int preE)
-    {
-        if(inS>inE)
-        return NULL;
+    
+    
+    TreeNode * constructTree(vector < int > & preorder, int preStart, int preEnd, vector 
+ < int > & inorder, int inStart, int inEnd, map < int, int > & mp) {
+  if (preStart > preEnd || inStart > inEnd) return NULL;
+
+  TreeNode * root = new TreeNode(preorder[preStart]);
+  int elem = mp[root -> val];
+  int nElem = elem - inStart;
+
+  root -> left = constructTree(preorder, preStart + 1, preStart + nElem, inorder,
+  inStart, elem - 1, mp);
+  root -> right = constructTree(preorder, preStart + nElem + 1, preEnd, inorder, 
+  elem + 1, inEnd, mp);
+
+  return root;
+}
+    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        map<int,int>mp;
+        for(int i=0;i<inorder.size();i++){
+            mp[inorder[i]] = i;
+        }
+          int preStart = 0, preEnd = preorder.size() - 1;
+          int inStart = 0, inEnd = inorder.size() - 1;
         
-        int rootData=preorder[preS];
-        TreeNode* root=new TreeNode(rootData);
-        int rootIndex=-1;
-        for(int i=inS;i<=inE;i++)
-        {
-            if(inorder[i]==rootData)
-            {
-                rootIndex=i;
-                break;
-            }
-        }    
-        int inleftS=inS;
-        int inleftE=rootIndex-1;
-        int preleftS=preS+1;
-        int preleftE=preleftS+inleftE-inleftS; 
-        
-        int inrightS=rootIndex+1;
-        int inrightE=inE;
-        int prerightS=preleftE+1;
-        int prerightE=preE;
-        
-        root->left=buildTreeHelper(preorder,inorder,inleftS,inleftE,preleftS,preleftE);
-        root->right=buildTreeHelper(preorder,inorder,inrightS,inrightE,prerightS,prerightE);
-        return root;
-    }
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
-    {
-        int n=inorder.size();
-        return buildTreeHelper(preorder,inorder,0,n-1,0,n-1);       
+          return constructTree(preorder, preStart, preEnd, inorder, inStart, inEnd, mp);
     }
 };

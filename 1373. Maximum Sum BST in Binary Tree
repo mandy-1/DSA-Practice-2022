@@ -1,0 +1,55 @@
+// class node{
+//     public:
+//     int sum;
+//     int mini;
+//     int maxi;
+//     node(int maxi ,int mini , int sum){
+//         this->maxi=maxi;
+//         this->mini=mini;
+//         this->sum=sum;
+//     }
+// };
+// bool flag =true;
+// class Solution {
+
+// public:
+    
+//     node f(TreeNode* root){
+//         if(root == NULL)return node(INT_MIN , INT_MAX , 0);
+        
+//         node lf = f(root->left);
+//         node rt = f(root->right);
+//         if(root->val > 0 ) flag = false;
+//         if(lf.maxi<root->val && root->val<rt.mini){
+//             return node(max(root->val,rt.maxi) , min(root->val , lf.mini) , lf.sum+rt.sum+root->val);
+//         }
+//         return node(INT_MAX , INT_MIN , max(lf.sum,rt.sum));
+        
+//     }
+    
+//     int maxSumBST(TreeNode* root) {
+//         int ans=f(root).sum;
+//         if(flag)return 0;
+//         return ans;
+//     }
+// };
+
+class Solution {
+public:
+    
+    vector<int> traverse(TreeNode* root, int& ans) {
+        if (!root) return {INT_MAX, INT_MIN, 0};
+        vector<int> left(traverse(root->left, ans)), right(traverse(root->right, ans));
+	
+        if (left.empty() || right.empty() || root->val <= left[1] || root->val >= right[0]) return {};
+		
+        int curr_sum = left[2] + right[2] + root->val;
+        ans = max(ans, curr_sum);
+        return {min(left[0], root->val), max(right[1], root->val), curr_sum};
+    }
+    int maxSumBST(TreeNode* root) {
+        int ans(0);
+        traverse(root, ans);
+        return max(0, ans);
+    }
+};

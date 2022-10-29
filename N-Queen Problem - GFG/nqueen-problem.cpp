@@ -7,138 +7,57 @@ using namespace std;
 // } Driver Code Ends
 // User function Template for C++
 
+
 class Solution{
 public:
-      bool isSafe(int row,int col,vector<vector<int>>board,int n)
-
-    {
-
-        //check left
-
-        int x=row;
-
-        int y=col;
-
-        while(y>=0)
-
-        {
-
-            if(board[x][y]==0)
-
-            {
-
-                return false;
-
-            }
-
-            y--;
-
+    vector<vector<int>>ans;
+    bool isvalid(int i,int j,vector<vector<int>>&m,int& n){
+        // digonal 1
+        int p=i,q=j;
+        i--,j--;
+        while(i>=0 && j>=0){
+            if(m[i][j]==1)return false;
+            i--;
+            j--;
         }
-
-        
-
-        x=row;
-
-        y=col;
-
-        while(x>=0 && y>=0)
-
-        {
-
-            if(board[x][y]==0) return false;
-
-            x--;
-
-            y--;
-
+        // up
+        i=p,j=q;
+        i--;
+        while(i>=0){
+            if(m[i][j]==1)return false;
+            i--;
         }
-
-        
-
-        x=row;
-
-        y=col;
-
-        
-
-        while(x<n && y>=0)
-
-        {
-
-            if(board[x][y]==0) return false;
-
-            x++;
-
-            y--;
-
+        // digonal 2
+        i=p,j=q;
+        i--,j++;
+        while(i>=0 && j<n){
+            if(m[i][j]==1)return false;
+            i--;
+            j++;
         }
-
-        
-
         return true;
-
     }
-
-    void solve(vector<vector<int>>&res,vector<vector<int>>&board,int col,int n,vector<int>temp)
-
-    {
-
-        if(col==n)
-
-        {
-
-            res.push_back(temp);
-
+    
+    void sol(int i,int j,int& n,vector<vector<int>>& m,vector<int>path){
+        if(i==n){
+            ans.push_back(path);
             return;
-
         }
-
-        
-
-        for(int row=0;row<n;row++)
-
-        {
-
-            if(isSafe(row,col,board,n))
-
-            {
-
-                temp.push_back(row+1);
-
-                board[row][col]=0;
-
-                solve(res,board,col+1,n,temp);
-
-                temp.pop_back();
-
-                board[row][col]=-1;
-
+        for(int j=0;j<n;j++){
+            if(isvalid(i,j,m,n)){
+                m[i][j]=1;
+                path.push_back(j+1);
+                sol(i+1,j,n,m,path);
+                path.pop_back();
+                m[i][j]=0;
             }
-
         }
-
-        
-
     }
-
-    vector<vector<int>> nQueen(int n) 
-
-    {
-
-        int col=0;
-
-        vector<vector<int>>board(n,vector<int>(n,-1));
-
-        vector<int>temp;
-
-        vector<vector<int>>res;
-
-        solve(res,board,col,n,temp);
-
-        return res;
-
-        
-
+    vector<vector<int>> nQueen(int n) {
+        vector<vector<int>>m(n,vector<int>(n,0));
+        sol(0,0,n,m,{});
+        // if(ans.size()==0)return {{-1}};
+        return ans;
     }
 };
 

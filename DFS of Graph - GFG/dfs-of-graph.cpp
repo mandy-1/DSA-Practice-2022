@@ -9,7 +9,7 @@ class Solution {
     vector<int>ans;
     void f(vector<int>& vis,int i,vector<int> adj[]){
         // cout<<i<<" ";
-        if(vis[i])return;
+        // if(vis[i])return;
         vis[i]=1;
         ans.push_back(i);
         for(int j=0;j<adj[i].size();j++){

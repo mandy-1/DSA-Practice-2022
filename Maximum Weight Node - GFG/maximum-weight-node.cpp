@@ -8,23 +8,22 @@ using namespace std;
 class Solution
 {
   public:
-  int maxWeightCell(int n, vector<int> edge)
-  {    unordered_map<int,int> mp;
-        int i=0;
-        while(i<n){
-            if(edge[i]!=-1){
-                mp[edge[i]] += i;
-            }
-            i++;
-        }
-        int m=INT_MIN, index=0;
-        for(auto it:mp){
-            if(m<=it.second){
-                m = it.second;
-                index = it.first;
-            }
-        }
-        return index;
+  int maxWeightCell(int n, vector<int> edges)
+  {   unordered_map<int,int>mp;
+      int maxi=0,ans=0;
+      for(int i=0;i<edges.size();i++){
+        //   cout<<maxi<<' '<<ans<<endl;
+          if(edges[i]==-1)continue;
+          mp[edges[i]]+=i;          
+          if(maxi<mp[edges[i]]){
+              ans=edges[i];
+              maxi=mp[edges[i]];
+          }
+          else if(mp[edges[i]]==maxi){
+              ans=max(edges[i],ans);
+          }
+      }
+      return ans;
   }
 };
 

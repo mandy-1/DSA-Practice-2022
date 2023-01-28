@@ -29,7 +29,7 @@ public:
         }
         int temp=s.size();
         if(dp[temp] != -1)return dp[temp];
-        int cur=INT_MAX;
+        int cur=1e9;
         for(int i= 0;i<temp;i++)
         {
             string qpr= s.substr(0,i+1);

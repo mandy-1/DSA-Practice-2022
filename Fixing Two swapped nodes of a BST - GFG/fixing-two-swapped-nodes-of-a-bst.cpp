@@ -110,7 +110,7 @@ class Solution {
     struct Node *correctBST(struct Node *root) {
         vector<Node*>tra;
         sol(root,tra);
-        int first=-1, middle=-1,last=-1;
+        int first=-1, middle=-1;
         for(int i=1;i<tra.size();i++){
             if(tra[i]->data < tra[i-1]->data){
                 if(first==-1){
@@ -118,16 +118,17 @@ class Solution {
                     middle=i;
                 }
                 else{
-                    last=i;
+                    middle=i;
                 }
             }
         }
-        if(last==-1){
-            swap(tra[first]->data,tra[middle]->data);
-        }
-        else{
-            swap(tra[first]->data,tra[last]->data);
-        }
+        // if(last==-1){
+        //     swap(tra[first]->data,tra[middle]->data);
+        // }
+        // else{
+        //     swap(tra[first]->data,tra[last]->data);
+        // }
+        swap(tra[first]->data,tra[middle]->data);
         return root;
     }
 };

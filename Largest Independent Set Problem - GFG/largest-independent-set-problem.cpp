@@ -102,36 +102,36 @@ struct Node
     }
 };
 */
-int sol(Node* node){
+int sol(Node* node,unordered_map<Node*,int>& mp){
     if(!node )return 0;
     if(node->left ==NULL && node->right==NULL)return 1;
-    
-    int notTake= sol(node->left)+sol(node->right);
+    if(mp[node])return mp[node];
+    int notTake= sol(node->left,mp)+sol(node->right,mp);
     int take=1;
     
     if(node->left){
         if(node->left->left){
-            take+=sol(node->left->left);
+            take+=sol(node->left->left,mp);
         }
         if(node->left->right){
-            take+=sol(node->left->right);
+            take+=sol(node->left->right,mp);
         }
     }
     if(node->right){
         if(node->right->left){
-            take+=sol(node->right->left);
+            take+=sol(node->right->left,mp);
         }
         if(node->right->right){
-            take+=sol(node->right->right);
+            take+=sol(node->right->right,mp);
         }
     }
-    return max(take,notTake);
+    return mp[node] = max(take,notTake);
 }
 
 int LISS(Node *root)
 {   
-    
-    return sol(root);
+    unordered_map<Node*,int>mp;
+    return sol(root,mp);
 }
 
 

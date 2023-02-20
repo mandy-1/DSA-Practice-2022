@@ -23,7 +23,6 @@ public:
                 }
                 // ans=max(ans,j-i-1);
                 if(ans<j-i-1){
-                    // cout<<i<<" "<<j<<endl;
                     ans = j-i-1;
                     final.first=i;
                     final.second=j;
@@ -42,7 +41,6 @@ public:
                 }
                 // ans=max(ans,k-p-1);
                 if(ans<k-p-1){
-                    // cout<<k<<" "<<p<<endl;
                     ans = k-p-1;
                     final.first=p;
                     final.second=k;
@@ -51,7 +49,7 @@ public:
             i++;
         }
         
-        if(ans==1)return s.substr(final.first,ans);
+        if(ans==1)return s.substr(0,ans);
         return s.substr(final.first+1,ans);
     }
 };

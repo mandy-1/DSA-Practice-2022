@@ -15,7 +15,6 @@ class Solution {
         int ans=0;
         for(int i=1;i<=V;i++){
             if(!vis[i]){
-                // cout<<i<<" ";
                 vis[i]=1;
                 queue<int>q;
                 int cnt=0;
@@ -24,7 +23,6 @@ class Solution {
                         vis[adj[i][j]]=1;
                         q.push(adj[i][j]);
                     }
-                    // else break;
                 }
                 cnt=adj[i].size();
                 bool flag=false;
@@ -43,7 +41,6 @@ class Solution {
                     }
                 }
                 if(!flag){
-                    // cout<<i<<" ";
                     ans++;
                 }
             }

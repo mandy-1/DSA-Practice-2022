@@ -55,51 +55,48 @@ printList(Node* node);
 class Solution {
   public:
     vector<Node*> findAnagrams(struct Node* head, string s)
-
     {
-        vector<Node*> res;
-        vector<int> v(26);
-        for(int i=0; i<s.size(); i++)
-            v[s[i]-'a']+=1;
-            
-        int n=s.size();
-        Node* a=head;
-        Node* b=head;
-        Node* d=head;
-        while(b!=NULL)
-        {
-            vector<int> t(26);
-            
-            int i=0;
-            while(i<n && b!=NULL)
-            {
-                char c=b->data;
-                t[c-'a']+=1;
-                i+=1;
-                
-                d=b;
-                b=b->next;
+        vector<int>mp(26,0),mp2(26,0);
+        int n=s.length();
+        for(int i=0;i<n;i++){
+            mp[s[i]-'a']++;
+        }
+        vector<Node*>ans;
+        int cnt=0;
+        Node* first = head;
+        Node* last = head;
+        Node* prev = head;
+        while(last){
+            if(cnt<n){
+                mp2[last->data -'a']++;
+                prev=last;
+                last=last->next;
+                cnt++;
             }
-            
-            while(v!=t && b!=NULL)
-            {
-                t[a->data-'a']-=1;
-                a=a->next;
-                
-                d=b;
-                t[b->data-'a']+=1;
-                b=b->next;
+            else if(cnt==n && mp2==mp){
+                ans.push_back(first);
+                prev->next=NULL;
+                first=last;
+                prev=last;
+                cnt=0;
+                for(int i=0;i<26;i++){
+                    mp2[i]=0;
+                }
             }
-            
-            if(v==t)
-            {
-                d->next=NULL;
-                
-                res.push_back(a);
-                a=b;
+            else{
+                mp2[first->data - 'a']--;
+                mp2[last->data - 'a']++;
+                first=first->next;
+                prev=last;
+                last=last->next;
             }
         }
-        return res;
+        // cout<<cnt;
+        if(cnt == n && mp2==mp){
+            ans.push_back(first);
+            prev->next=NULL;   
+        }
+        return ans;
 
     }
 };

@@ -17,7 +17,6 @@ class Solution {
         }
         if(N<prev)return 0;
         if(dp[idx][N][prev] != -1)return dp[idx][N][prev];
-        // cout<<idx<<" "<<prev<<" "<<N<<endl;
         int cnt=0;
         for(int i=prev;i<=N;i++){
             cnt += sol(idx+1,i,N-i,k,dp);
@@ -30,6 +29,8 @@ class Solution {
         return sol(0,1,N,K,dp);
     }
 };
+
+
 
 //{ Driver Code Starts.
 int main() {

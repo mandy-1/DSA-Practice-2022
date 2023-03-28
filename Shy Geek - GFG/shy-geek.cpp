@@ -57,7 +57,7 @@ Shop shop;
             k %= tmp;
         }
     
-        while (r >= 0 && k >= 1)
+        while (r>=0 && k >= 1)
         {
             long long ind = 0, tmp;
             l = 0;

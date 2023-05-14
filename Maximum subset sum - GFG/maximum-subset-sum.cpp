@@ -33,7 +33,7 @@ class Solution {
   public:
     int sol(int idx,vector<int>& arr,int flag,vector<vector<int>>& dp){
         if(idx>=arr.size()) return 0;
-        if(dp[idx][flag+1] != -1)return dp[idx][flag+1];
+        if(dp[idx][flag+1] != INT_MIN)return dp[idx][flag+1];
         int notTake=INT_MIN;
         int take = arr[idx] + sol(idx+1,arr,1,dp);
         if(flag || flag ==-1){
@@ -43,7 +43,7 @@ class Solution {
     }  
   
     long long findMaxSubsetSum(int N, vector<int> &A) {
-        vector<vector<int>>dp(A.size(),vector<int>(3,-1));
+        vector<vector<int>>dp(A.size(),vector<int>(3,INT_MIN));
         return sol(0,A,-1,dp);
     }
 };

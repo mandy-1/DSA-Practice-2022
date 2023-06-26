@@ -9,20 +9,18 @@ using namespace std;
 
 class Solution{
 public:
-int mod =1e9+7;
-  
+int mod=1e9+7;
     int nCr(int n, int r){
-        if(r>n)return 0;
-        if(n-r<r)r=n-r;
-        vector<long long int>dp(r+1,0);
-        dp[0]=1;
-        for(int i=1;i<=n;i++){
-            for(int j=min(i,r);j>0;j--){
-                dp[j] = (dp[j]+dp[j-1])%mod;
+        if(n<r)return 0;
+        vector<int>pascal;
+        for(int i=0;i<=n;i++){
+            vector<int>v(i+1,1);
+            for(int j=1;j<i;j++){
+                v[j]=(pascal[j]+pascal[j-1])%mod;
             }
+            pascal=v;
         }
-        // for(int i=0;i<n;i++)cout<<dp[i]<<" ";
-        return dp[r];
+        return pascal[r];
     }
 };
 
